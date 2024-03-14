@@ -17,6 +17,7 @@ namespace HWmonitor
         PerformanceCounter[] CPUCounters;
         int cpuCount = 0;
         int interval = 500;
+        int coresPerIcon = 8;
         ContextMenu contextMenu;
         Thread notifyThread;
 
@@ -30,7 +31,6 @@ namespace HWmonitor
             InitializeMemoryIcon();
 
             cpuCount = (int)Environment.ProcessorCount;
-
             InitializeCpuIcons(cpuCount);
 
             notifyThread = new Thread(
@@ -58,19 +58,15 @@ namespace HWmonitor
             bitmaps = new Bitmap[cpuCount];
             trayIcons = new NotifyIcon[cpuCount];
 
-            for (int i = 0; i < cpuCount; i+=2)
+            for (int i = 0; i < cpuCount; i+= coresPerIcon)
             {
                 this.bitmaps[i] = new Bitmap(16, 16);
             }
 
 
-            for (int i = 0; i < cpuCount; i+=2)
+            for (int i = 0; i < cpuCount; i+= coresPerIcon)
             {
                 trayIcons[i] = new NotifyIcon();
-                using (Graphics g = Graphics.FromImage(bitmaps[i]))
-                    g.DrawRectangle(Pens.White, 1, 0, 6, 15);
-                using (Graphics g = Graphics.FromImage(bitmaps[i]))
-                    g.DrawRectangle(Pens.White, 9, 0, 6, 15);
                 trayIcons[i].Icon = Icon.FromHandle(bitmaps[i].GetHicon());
                 trayIcons[i].ContextMenu = contextMenu;
                 trayIcons[i].Visible = true;
@@ -81,8 +77,6 @@ namespace HWmonitor
         {
             memoryBitmap = new Bitmap(16, 16);
             memoryIcon = new NotifyIcon();
-            using (Graphics g = Graphics.FromImage(memoryBitmap))
-                g.DrawRectangle(Pens.White, 0, 0, 15, 15);
             memoryIcon.Icon = Icon.FromHandle(memoryBitmap.GetHicon());
             memoryIcon.ContextMenu = contextMenu;
             memoryIcon.Visible = true;
@@ -94,9 +88,6 @@ namespace HWmonitor
             memoryBitmap = new Bitmap(16, 16);
             using (Graphics g = Graphics.FromImage(memoryBitmap))
                 g.Clear(Color.Transparent);
-            using (Graphics g = Graphics.FromImage(memoryBitmap))
-                g.DrawRectangle(Pens.White, 0, 0, 15, 15);
-
 
             ulong total = new Microsoft.VisualBasic.Devices.ComputerInfo().TotalPhysicalMemory;
             ulong available = new Microsoft.VisualBasic.Devices.ComputerInfo().AvailablePhysicalMemory;
@@ -105,8 +96,22 @@ namespace HWmonitor
 
             int availableHeight = (int)Math.Round(percentAvailable * 15);
 
+            Brush color = Brushes.White;
+
+            if (percentAvailable < 0.2) {
+                color = Brushes.Orange;
+            }
+            if (percentAvailable < 0.1)
+            {
+                color = Brushes.OrangeRed;
+            }
+            if (percentAvailable < 0.05)
+            {
+                color = Brushes.Red;
+            }
+
             using (Graphics g = Graphics.FromImage(memoryBitmap))
-                g.FillRectangle(Brushes.White, 0, availableHeight, 15, 15 - availableHeight);
+                g.FillRectangle(color, 1, availableHeight, 14, 15 - availableHeight);
 
             IntPtr hicon = memoryBitmap.GetHicon();
             memoryIcon.Icon = Icon.FromHandle(hicon);
@@ -115,35 +120,30 @@ namespace HWmonitor
 
         private void RefreshCpuIcons()
         {
-            for (int i = 0; i < cpuCount; i+=2)
+            for (int i = 0; i < cpuCount; i+= coresPerIcon)
             {
-                float core1Usage = GetCpuUsage(i);
-                float core2Usage = GetCpuUsage(i + 1);
-
-
-                float core1FreePercent = 1 - (core1Usage / 100);
-                float core2FreePercent = 1 - (core2Usage / 100);
-
-                int availableC1Height = (int)Math.Round(core1FreePercent * 15);
-                int availableC2Height = (int)Math.Round(core2FreePercent * 15);
-
+                int diff = cpuCount - (i+ coresPerIcon);
+                int sub = 0;
+                if (diff < 0) {
+                    sub = diff * -1;
+                }
 
                 bitmaps[i].Dispose();
                 bitmaps[i] = new Bitmap(16, 16);
                 using (Graphics g = Graphics.FromImage(bitmaps[i]))
                     g.Clear(Color.Transparent);
 
+                for (int j = 0; j < coresPerIcon - sub; j++) {
+                    float coreUsage = GetCpuUsage(i + j);
+                    float coreFreePercent = 1 - (coreUsage / 100);
+                    int availableCoreHeight = (int)Math.Round(coreFreePercent * 16);
 
-                using (Graphics g = Graphics.FromImage(bitmaps[i]))
-                    g.DrawRectangle(Pens.White, 1, 0, 6, 15);
-                using (Graphics g = Graphics.FromImage(bitmaps[i]))
-                    g.DrawRectangle(Pens.White, 9, 0, 6, 15);
+                    using (Graphics g = Graphics.FromImage(bitmaps[i]))
+                        g.FillRectangle(Brushes.Gray, 1 + (j * 2), 15, 1, 1);
 
-                using (Graphics g = Graphics.FromImage(bitmaps[i]))
-                    g.FillRectangle(Brushes.White, 1, availableC1Height, 6, 15 - availableC1Height);
-                using (Graphics g = Graphics.FromImage(bitmaps[i]))
-                    g.FillRectangle(Brushes.White, 9, availableC2Height, 6, 15 - availableC2Height);
-
+                    using (Graphics g = Graphics.FromImage(bitmaps[i]))
+                        g.FillRectangle(Brushes.White, 1 + (j * 2), availableCoreHeight, 1, 16 - availableCoreHeight);
+                }
 
                 IntPtr hicon = bitmaps[i].GetHicon();
                 trayIcons[i].Icon = Icon.FromHandle(hicon);
@@ -172,7 +172,7 @@ namespace HWmonitor
         void Exit(object sender, EventArgs e)
         {
             notifyThread.Abort();
-            for (int i = 0; i < cpuCount; i += 2)
+            for (int i = 0; i < cpuCount; i += coresPerIcon)
             {
                 trayIcons[i].Visible = false;
             }
