@@ -1,7 +1,18 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="HWmonitor.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="IntervalCPU" Type="System.UInt32" Scope="User">
+      <Value Profile="(Default)">500</Value>
+    </Setting>
+    <Setting Name="IntervalMemory" Type="System.UInt32" Scope="User">
+      <Value Profile="(Default)">1000</Value>
+    </Setting>
+    <Setting Name="IntervalWeather" Type="System.UInt32" Scope="User">
+      <Value Profile="(Default)">1800000</Value>
+    </Setting>
+    <Setting Name="CoresPerIcon" Type="System.UInt32" Scope="User">
+      <Value Profile="(Default)">8</Value>
+    </Setting>
+  </Settings>
 </SettingsFile>
