@@ -1,42 +1,63 @@
-﻿using HWmonitor.widgets;
+﻿using HWmonitor.Forms;
+using HWmonitor.Widgets;
 using System;
 using System.Runtime.InteropServices;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace HWmonitor
 {
     public class HWMonitorContext : ApplicationContext
     {
-        ContextMenu contextMenu;
+        private readonly ContextMenu ContextMenu;
+        private readonly MemoryWidget MemoryWidget = new MemoryWidget();
+        private readonly CPUWidget CpuWidget = new CPUWidget(Environment.ProcessorCount);
+        private readonly EmptyWidget EmptyWidget  = new EmptyWidget();
 
-        MemoryWidget memoryWidget = new MemoryWidget();
-        CPUWidget cpuWidget = new CPUWidget((int)Environment.ProcessorCount);
+        private int widgetsShown = 0;
 
         [System.Runtime.InteropServices.DllImport("user32.dll", CharSet = CharSet.Auto)]
         extern static bool DestroyIcon(IntPtr handle);
 
         public HWMonitorContext() 
         {
-            contextMenu = new ContextMenu();
-            contextMenu.MenuItems.Add("Settings", ShowSettings);
-            contextMenu.MenuItems.Add("Exit", Exit);
+            ContextMenu = new ContextMenu();
+            ContextMenu.MenuItems.Add("Settings", ShowSettings);
+            ContextMenu.MenuItems.Add("Exit", Exit);
 
-            memoryWidget.InitializeMemoryIcon(contextMenu);
-            memoryWidget.Start(DestroyIcon);
-            cpuWidget.InitializeCpuIcons(contextMenu);
-            cpuWidget.Start(DestroyIcon);
+            if (Properties.Settings.Default.ShowMemory)
+            {
+                MemoryWidget.InitializeMemoryIcon(ContextMenu);
+                MemoryWidget.Start(DestroyIcon);
+                widgetsShown++;
+            }
+
+            if (Properties.Settings.Default.ShowCPU)
+            {
+                CpuWidget.InitializeCpuIcons(ContextMenu);
+                CpuWidget.Start(DestroyIcon);
+                widgetsShown++;
+            }
+
+            if (widgetsShown == 0) 
+            {
+                EmptyWidget.Initialize(ContextMenu);
+            }
         }
 
         void Exit(object sender, EventArgs e)
         {
-            cpuWidget.Destroy();
-            memoryWidget.Destroy();
+            CpuWidget.Destroy();
+            MemoryWidget.Destroy();
+
+            if (widgetsShown == 0) { 
+                EmptyWidget.Destroy();
+            }
+
             Environment.Exit(0);
         }
         void ShowSettings(object sender, EventArgs e)
         {
-            //TODO: Show Settings Panel
+            new Settings().Show();
         }
     }
 }

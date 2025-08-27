@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HWmonitor.widgets
+namespace HWmonitor.Widgets
 {
     internal class BaseWidget
     {

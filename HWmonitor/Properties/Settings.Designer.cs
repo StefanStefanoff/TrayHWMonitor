@@ -70,5 +70,29 @@ namespace HWmonitor.Properties {
                 this["CoresPerIcon"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ShowMemory {
+            get {
+                return ((bool)(this["ShowMemory"]));
+            }
+            set {
+                this["ShowMemory"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ShowCPU {
+            get {
+                return ((bool)(this["ShowCPU"]));
+            }
+            set {
+                this["ShowCPU"] = value;
+            }
+        }
     }
 }

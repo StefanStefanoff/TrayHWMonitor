@@ -14,5 +14,11 @@
     <Setting Name="CoresPerIcon" Type="System.UInt32" Scope="User">
       <Value Profile="(Default)">8</Value>
     </Setting>
+    <Setting Name="ShowMemory" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="ShowCPU" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

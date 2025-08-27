@@ -1,11 +1,10 @@
-﻿using HWmonitor.widgets;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace HWmonitor
+namespace HWmonitor.Widgets
 {
     internal class MemoryWidget: BaseWidget
     {

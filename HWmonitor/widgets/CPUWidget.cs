@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace HWmonitor.widgets
+namespace HWmonitor.Widgets
 {
     internal class CPUWidget: BaseWidget
     {
@@ -13,6 +13,9 @@ namespace HWmonitor.widgets
         NotifyIcon[] trayIcons;
         Bitmap[] bitmaps;
         Thread notifyThread;
+        int bitmapWidth = 16;
+        int bitmapHeight = 16;
+        int thickness = 1;
 
         int cpuCount = 0;
         int coresPerIcon = 0;
@@ -22,6 +25,16 @@ namespace HWmonitor.widgets
             name = "CPU";
             this.cpuCount = cpuCount;
             coresPerIcon = Int32.Parse(Properties.Settings.Default.CoresPerIcon.ToString());
+
+            thickness = 1;
+            if (coresPerIcon <= 4 && coresPerIcon > 2)
+            {
+                thickness = 2;
+            }
+            if (coresPerIcon <= 2)
+            {
+                thickness = 4;
+            }
         }
 
         public void InitializeCpuIcons(ContextMenu contextMenu)
@@ -38,7 +51,7 @@ namespace HWmonitor.widgets
 
             for (int i = 0; i < cpuCount; i += coresPerIcon)
             {
-                this.bitmaps[i] = new Bitmap(16, 16);
+                this.bitmaps[i] = new Bitmap(bitmapWidth, bitmapHeight);
             }
 
 
@@ -63,7 +76,8 @@ namespace HWmonitor.widgets
                 }
 
                 bitmaps[i].Dispose();
-                bitmaps[i] = new Bitmap(16, 16);
+                bitmaps[i] = new Bitmap(bitmapWidth, bitmapHeight);
+
                 using (Graphics g = Graphics.FromImage(bitmaps[i]))
                     g.Clear(Color.Transparent);
 
@@ -71,13 +85,13 @@ namespace HWmonitor.widgets
                 {
                     float coreUsage = GetCpuUsage(i + j);
                     float coreFreePercent = 1 - (coreUsage / 100);
-                    int availableCoreHeight = (int)Math.Round(coreFreePercent * 16);
+                    int availableCoreHeight = (int)Math.Round(coreFreePercent * bitmapHeight);
 
                     using (Graphics g = Graphics.FromImage(bitmaps[i]))
-                        g.FillRectangle(Brushes.Gray, 1 + (j * 2), 15, 1, 1);
+                        g.FillRectangle(Brushes.Gray, 1 + (j * 2), bitmapHeight - 1, thickness, 1);
 
                     using (Graphics g = Graphics.FromImage(bitmaps[i]))
-                        g.FillRectangle(Brushes.White, 1 + (j * 2), availableCoreHeight, 1, 16 - availableCoreHeight);
+                        g.FillRectangle(Brushes.White, 1 + (j * 2), availableCoreHeight, thickness, bitmapHeight - availableCoreHeight);
                 }
 
                 IntPtr hicon = bitmaps[i].GetHicon();
