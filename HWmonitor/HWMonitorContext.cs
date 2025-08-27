@@ -46,12 +46,14 @@ namespace HWmonitor
 
         void Exit(object sender, EventArgs e)
         {
-            CpuWidget.Destroy();
-            MemoryWidget.Destroy();
+            if (Properties.Settings.Default.ShowCPU)
+                CpuWidget.Destroy();
 
-            if (widgetsShown == 0) { 
+            if (Properties.Settings.Default.ShowMemory)
+                MemoryWidget.Destroy();
+
+            if (widgetsShown == 0)
                 EmptyWidget.Destroy();
-            }
 
             Environment.Exit(0);
         }
