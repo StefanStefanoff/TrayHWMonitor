@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -22,6 +23,8 @@ namespace HWmonitor.Forms
 
             ShowMemoryCheckbox.Checked = Properties.Settings.Default.ShowMemory;
             MemoryRefreshInterval.Value = Properties.Settings.Default.IntervalMemory;
+
+            AutostartCheckbox.Checked = Properties.Settings.Default.Autostart;
         }
 
         private void SettingsForm_Load(object sender, EventArgs e)
@@ -40,7 +43,35 @@ namespace HWmonitor.Forms
 
             Properties.Settings.Default.Save();
 
+            Properties.Settings.Default.Autostart = AutostartCheckbox.Checked;
+            if (AutostartCheckbox.Checked)
+            {
+                AddStartup("HWmonitor", Application.ExecutablePath);
+            }
+            else
+            {
+                RemoveStartup("HWmonitor");
+            }
+
             this.Close();
+        }
+
+        private void AddStartup(string appName, string path)
+        {
+            using (RegistryKey key = Registry.CurrentUser.OpenSubKey
+                ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true))
+            {
+                key.SetValue(appName, "\"" + path + "\"");
+            }
+        }
+
+        private void RemoveStartup(string appName)
+        {
+            using (RegistryKey key = Registry.CurrentUser.OpenSubKey
+                ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true))
+            {
+                key.DeleteValue(appName, false);
+            }
         }
     }
 }
