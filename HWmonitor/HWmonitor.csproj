@@ -81,19 +81,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Forms\WeatherPopup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\WeatherPopup.Designer.cs">
+      <DependentUpon>WeatherPopup.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Settings.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\Settings.Designer.cs">
       <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\WeatherIconHelper.cs" />
     <Compile Include="HWMonitorContext.cs" />
     <Compile Include="Widgets\BaseWidget.cs" />
     <Compile Include="Widgets\CPUWidget.cs" />
     <Compile Include="Widgets\EmptyWidget.cs" />
+    <Compile Include="Widgets\WeatherWidget.cs" />
     <Compile Include="Widgets\MemoryWidget.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Forms\WeatherPopup.resx">
+      <DependentUpon>WeatherPopup.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Settings.resx">
       <DependentUpon>Settings.cs</DependentUpon>
     </EmbeddedResource>
@@ -105,6 +116,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="HWmonitor_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
@@ -131,6 +143,54 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\blizzard.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sunny.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\rain.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\snow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sleet.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\thunder-rain.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\heavy-rain.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\fog.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\drizzle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\thunder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\partly-cloudy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cloudy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pressure.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\wind.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\precipitation.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sunny.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Settings));
             this.saveBtn = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -40,6 +41,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.MemoryRefreshInterval = new System.Windows.Forms.NumericUpDown();
             this.ShowMemoryCheckbox = new System.Windows.Forms.CheckBox();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.label5 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.AutostartCheckbox = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
@@ -48,6 +51,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.CPURefreshInterval)).BeginInit();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MemoryRefreshInterval)).BeginInit();
+            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // saveBtn
@@ -65,6 +69,7 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Location = new System.Drawing.Point(12, 44);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -192,6 +197,26 @@
             this.ShowMemoryCheckbox.Text = "Show Memory icon";
             this.ShowMemoryCheckbox.UseVisualStyleBackColor = true;
             // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.label5);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(345, 130);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Weather";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(152, 58);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(38, 13);
+            this.label5.TabIndex = 0;
+            this.label5.Text = "TODO";
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -220,6 +245,7 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.saveBtn);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(393, 346);
             this.MinimumSize = new System.Drawing.Size(393, 346);
             this.Name = "Settings";
@@ -233,6 +259,8 @@
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MemoryRefreshInterval)).EndInit();
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -254,5 +282,7 @@
         private System.Windows.Forms.CheckBox ShowMemoryCheckbox;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckBox AutostartCheckbox;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.Label label5;
     }
 }

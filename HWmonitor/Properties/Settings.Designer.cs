@@ -106,5 +106,17 @@ namespace HWmonitor.Properties {
                 this["Autostart"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ShowWeather {
+            get {
+                return ((bool)(this["ShowWeather"]));
+            }
+            set {
+                this["ShowWeather"] = value;
+            }
+        }
     }
 }
